@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Amma!</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap');
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --rose:#e8436f;--rose-light:#fce4ec;--rose-dark:#b71c5c;
+    --gold:#c9943e;--gold-light:#f5e6c8;
+    --plum:#7b2d8e;--plum-light:#f3e5f5;
+    --peach:#ff8a65;--cream:#fffaf5;--ivory:#fdf8f0;
+    --text:#2d2d2d;--text-light:#6b6b6b;--text-muted:#999;
+  }
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Poppins',sans-serif;
+    background:var(--cream);
+    overflow-x:hidden;color:var(--text);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ===== PRELOADER ===== */
+  #preloader{
+    position:fixed;inset:0;z-index:10000;
+    background:linear-gradient(135deg,#2d1b3d,#1a1a2e,#2d1b3d);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    transition:opacity 1s cubic-bezier(.4,0,.2,1),visibility 1s;
+  }
+  #preloader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+  .loader-ring{
+    width:100px;height:100px;position:relative;
+  }
+  .loader-ring::before,.loader-ring::after{
+    content:'';position:absolute;inset:0;border-radius:50%;
+    border:3px solid transparent;
+  }
+  .loader-ring::before{
+    border-top-color:var(--rose);border-right-color:var(--gold);
+    animation:loaderSpin 1.2s linear infinite;
+  }
+  .loader-ring::after{
+    border-bottom-color:var(--plum);border-left-color:var(--peach);
+    animation:loaderSpin 1.2s linear infinite reverse;
+    inset:8px;
+  }
+  .loader-emoji{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    font-size:36px;animation:loaderPulse 1s ease infinite;
+  }
+  @keyframes loaderSpin{to{transform:rotate(360deg)}}
+  @keyframes loaderPulse{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.15)}}
+  #preloader p{
+    font-family:'Great Vibes',cursive;font-size:24px;color:var(--gold);
+    margin-top:30px;opacity:0;animation:fadeIn 1s .5s forwards;
+  }
+  @keyframes fadeIn{to{opacity:1}}
+
+  /* ===== CONFETTI ===== */
+  #confetti-canvas{position:fixed;inset:0;pointer-events:none;z-index:9999}
+
+  /* ===== FLOATING ELEMENTS ===== */
+  .floaters{position:fixed;inset:0;pointer-events:none;z-index:50;overflow:hidden}
+  .floater{
+    position:absolute;opacity:0;
+    animation:floatUp linear infinite;
+  }
+  @keyframes floatUp{
+    0%{transform:translateY(105vh) rotate(0) scale(.6);opacity:0}
+    8%{opacity:.7}85%{opacity:.5}
+    100%{transform:translateY(-8vh) rotate(540deg) scale(1);opacity:0}
+  }
+
+  /* ===== HERO ===== */
+  .hero{
+    min-height:100vh;display:flex;align-items:center;justify-content:center;
+    position:relative;overflow:hidden;
+    background:#1a1a2e;
+  }
+  .hero-bg{
+    position:absolute;inset:0;display:grid;
+    grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,1fr);
+    gap:4px;opacity:.18;
+    filter:blur(2px);
+  }
+  .hero-bg img{width:100%;height:100%;object-fit:cover}
+  .hero-overlay{
+    position:absolute;inset:0;
+    background:
+      radial-gradient(ellipse at 50% 50%,rgba(26,26,46,.3) 0%,rgba(26,26,46,.85) 70%),
+      linear-gradient(180deg,rgba(26,26,46,.4),rgba(26,26,46,.95));
+  }
+  .hero-content{
+    position:relative;z-index:2;text-align:center;padding:40px 20px;
+  }
+
+  /* Photo ring */
+  .hero-photo-wrap{
+    position:relative;display:inline-block;
+    margin-bottom:30px;
+  }
+  .hero-photo-ring{
+    position:absolute;inset:-12px;border-radius:50%;
+    border:2px solid transparent;
+    background:conic-gradient(from 0deg,var(--rose),var(--gold),var(--plum),var(--peach),var(--rose)) border-box;
+    -webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);
+    mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;
+    animation:ringRotate 6s linear infinite;
+  }
+  @keyframes ringRotate{to{transform:rotate(360deg)}}
+  .hero-photo{
+    width:200px;height:200px;border-radius:50%;object-fit:cover;
+    border:4px solid rgba(255,255,255,.9);display:block;
+    opacity:0;transform:scale(.5);
+    animation:heroEntry 1.2s .5s cubic-bezier(.34,1.56,.64,1) forwards;
+  }
+  @keyframes heroEntry{to{opacity:1;transform:scale(1)}}
+
+  .hero-badge{
+    font-family:'Poppins',sans-serif;font-size:13px;letter-spacing:4px;
+    text-transform:uppercase;color:var(--gold);
+    margin-bottom:8px;
+    opacity:0;animation:slideUp .8s .8s forwards;
+  }
+  .hero-malayalam{
+    font-size:clamp(22px,4vw,36px);color:rgba(255,255,255,.85);
+    margin-bottom:6px;
+    opacity:0;animation:slideUp .8s 1s forwards;
+  }
+  .hero h1{
+    font-family:'Great Vibes',cursive;
+    font-size:clamp(48px,10vw,100px);
+    color:white;line-height:1.1;
+    margin-bottom:12px;
+    opacity:0;animation:slideUp 1s 1.2s forwards;
+  }
+  .hero h1 em{
+    background:linear-gradient(135deg,var(--rose),var(--peach),var(--gold));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    background-clip:text;font-style:normal;
+  }
+  .hero-sub{
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(16px,2.5vw,22px);font-weight:300;font-style:italic;
+    color:rgba(255,255,255,.6);letter-spacing:1px;
+    opacity:0;animation:slideUp .8s 1.5s forwards;
+  }
+  @keyframes slideUp{from{opacity:0;transform:translateY(35px)}to{opacity:1;transform:translateY(0)}}
+
+  .scroll-arrow{
+    position:absolute;bottom:35px;left:50%;transform:translateX(-50%);
+    width:30px;height:50px;border:2px solid rgba(255,255,255,.3);border-radius:15px;
+    opacity:0;animation:slideUp .8s 2.2s forwards;
+    cursor:pointer;z-index:5;
+  }
+  .scroll-arrow::before{
+    content:'';position:absolute;top:8px;left:50%;width:4px;height:10px;
+    background:var(--gold);border-radius:2px;transform:translateX(-50%);
+    animation:scrollDot 1.8s ease infinite;
+  }
+  @keyframes scrollDot{
+    0%{top:8px;opacity:1}100%{top:30px;opacity:0}
+  }
+
+  /* ===== SECTION COMMON ===== */
+  .section-title{
+    font-family:'Playfair Display',serif;
+    font-size:clamp(28px,5vw,48px);font-weight:400;
+    text-align:center;color:var(--text);
+    margin-bottom:12px;
+    opacity:0;transform:translateY(30px);
+    transition:all .8s cubic-bezier(.4,0,.2,1);
+  }
+  .section-title.visible{opacity:1;transform:translateY(0)}
+  .section-title em{font-style:italic;color:var(--rose)}
+  .section-sub{
+    text-align:center;font-family:'Cormorant Garamond',serif;
+    font-size:clamp(16px,2vw,20px);color:var(--text-muted);
+    font-style:italic;margin-bottom:50px;
+    opacity:0;transform:translateY(20px);
+    transition:all .8s .15s cubic-bezier(.4,0,.2,1);
+  }
+  .section-sub.visible{opacity:1;transform:translateY(0)}
+  .section-divider{
+    width:60px;height:2px;margin:0 auto 50px;
+    background:linear-gradient(90deg,var(--rose),var(--gold));
+    opacity:0;transition:all .8s .1s;
+  }
+  .section-divider.visible{opacity:1}
+
+  /* ===== MESSAGE ===== */
+  .message-section{
+    padding:120px 20px;position:relative;overflow:hidden;
+    background:linear-gradient(180deg,var(--cream),white,var(--cream));
+  }
+  .msg-deco{
+    position:absolute;font-size:200px;opacity:.04;
+    font-family:'Great Vibes',cursive;color:var(--rose);
+    pointer-events:none;user-select:none;
+  }
+  .msg-deco.left{top:40px;left:-30px;transform:rotate(-10deg)}
+  .msg-deco.right{bottom:40px;right:-30px;transform:rotate(8deg)}
+
+  .message-card{
+    max-width:680px;margin:0 auto;position:relative;
+    background:white;border-radius:24px;
+    padding:55px 45px;
+    border:1px solid rgba(201,148,62,.15);
+    box-shadow:0 30px 80px rgba(183,28,92,.06),0 8px 20px rgba(0,0,0,.04);
+    opacity:0;transform:translateY(50px);
+    transition:all 1s cubic-bezier(.34,1.56,.64,1);
+  }
+  .message-card.visible{opacity:1;transform:translateY(0)}
+  .message-card::before{
+    content:'';position:absolute;top:-1px;left:40px;right:40px;height:3px;
+    background:linear-gradient(90deg,transparent,var(--gold),var(--rose),var(--gold),transparent);
+    border-radius:0 0 3px 3px;
+  }
+  .msg-quote{
+    font-family:'Playfair Display',serif;font-size:72px;
+    color:var(--rose-light);line-height:.6;margin-bottom:15px;
+  }
+  .message-card p{
+    font-family:'Cormorant Garamond',serif;
+    font-size:20px;line-height:2;color:var(--text-light);font-weight:400;
+  }
+  .msg-sign{
+    font-family:'Great Vibes',cursive;font-size:30px;
+    color:var(--rose);margin-top:30px;
+    display:flex;align-items:center;gap:10px;justify-content:flex-end;
+  }
+  .msg-sign::before{
+    content:'';width:40px;height:1px;background:var(--rose);opacity:.4;
+  }
+
+  /* ===== PHOTO COLLAGE - MASONRY ===== */
+  .gallery-section{
+    padding:100px 20px;
+    background:linear-gradient(180deg,var(--cream),var(--rose-light) 50%,var(--plum-light) 75%,var(--cream));
+    position:relative;
+  }
+  .masonry{
+    max-width:1100px;margin:0 auto;
+    columns:3;column-gap:20px;
+  }
+  .masonry-item{
+    break-inside:avoid;margin-bottom:20px;
+    position:relative;border-radius:16px;overflow:hidden;
+    box-shadow:0 8px 30px rgba(0,0,0,.1);
+    cursor:pointer;
+    opacity:0;transform:translateY(40px) scale(.95);
+    transition:all .7s cubic-bezier(.34,1.56,.64,1);
+  }
+  .masonry-item.visible{opacity:1;transform:translateY(0) scale(1)}
+  .masonry-item:hover{
+    transform:translateY(-6px) scale(1.02) !important;
+    box-shadow:0 20px 50px rgba(183,28,92,.2);z-index:3;
+  }
+  .masonry-item img{
+    width:100%;display:block;
+    transition:transform .6s cubic-bezier(.4,0,.2,1);
+  }
+  .masonry-item:hover img{transform:scale(1.08)}
+
+  .masonry-caption{
+    position:absolute;bottom:0;left:0;right:0;
+    padding:50px 20px 18px;
+    background:linear-gradient(to top,rgba(26,26,46,.75),transparent);
+    transform:translateY(100%);
+    transition:transform .4s cubic-bezier(.4,0,.2,1);
+  }
+  .masonry-item:hover .masonry-caption{transform:translateY(0)}
+  .masonry-caption span{
+    font-family:'Cormorant Garamond',serif;
+    font-size:18px;font-style:italic;color:white;
+  }
+  .masonry-caption small{
+    display:block;font-size:12px;color:rgba(255,255,255,.6);
+    margin-top:3px;letter-spacing:1px;text-transform:uppercase;
+  }
+
+  /* Feature photo (large) */
+  .feature-photo{
+    max-width:700px;margin:0 auto 60px;
+    border-radius:20px;overflow:hidden;position:relative;
+    box-shadow:0 30px 70px rgba(0,0,0,.12);
+    opacity:0;transform:scale(.92);
+    transition:all 1s cubic-bezier(.34,1.56,.64,1);
+  }
+  .feature-photo.visible{opacity:1;transform:scale(1)}
+  .feature-photo img{width:100%;display:block}
+  .feature-photo .fp-label{
+    position:absolute;bottom:0;left:0;right:0;
+    padding:60px 30px 25px;
+    background:linear-gradient(to top,rgba(26,26,46,.8),transparent);
+    text-align:center;
+  }
+  .feature-photo .fp-label h3{
+    font-family:'Great Vibes',cursive;font-size:36px;color:white;
+  }
+  .feature-photo .fp-label p{
+    font-family:'Cormorant Garamond',serif;
+    font-size:16px;color:rgba(255,255,255,.7);font-style:italic;
+  }
+
+  /* ===== POLAROID SCATTER ===== */
+  .polaroid-section{
+    padding:100px 20px 120px;
+    background:linear-gradient(180deg,var(--cream),white);
+    position:relative;overflow:hidden;
+  }
+  .polaroid-grid{
+    max-width:900px;margin:0 auto;
+    display:flex;flex-wrap:wrap;justify-content:center;gap:10px;
+    position:relative;min-height:500px;
+  }
+  .polaroid{
+    background:white;padding:10px 10px 40px;
+    box-shadow:0 6px 25px rgba(0,0,0,.12);
+    position:relative;
+    width:220px;
+    transition:all .6s cubic-bezier(.34,1.56,.64,1);
+    opacity:0;
+    cursor:pointer;
+  }
+  .polaroid.visible{opacity:1}
+  .polaroid:hover{
+    z-index:5 !important;
+    transform:scale(1.08) rotate(0deg) !important;
+    box-shadow:0 20px 50px rgba(183,28,92,.25);
+  }
+  .polaroid img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block}
+  .polaroid .pol-text{
+    text-align:center;padding-top:12px;
+    font-family:'Cormorant Garamond',serif;
+    font-size:15px;color:var(--text-light);font-style:italic;
+  }
+  /* Scatter positions */
+  .polaroid:nth-child(1){transform:rotate(-6deg);margin-top:20px}
+  .polaroid:nth-child(2){transform:rotate(3deg);margin-top:-10px}
+  .polaroid:nth-child(3){transform:rotate(-2deg);margin-top:40px}
+  .polaroid:nth-child(4){transform:rotate(5deg);margin-top:0}
+
+  /* ===== WISHES ===== */
+  .wishes-section{
+    padding:100px 20px;
+    background:linear-gradient(135deg,var(--ivory),var(--rose-light) 40%,var(--plum-light) 70%,var(--gold-light));
+    text-align:center;
+  }
+  .wishes-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:28px;max-width:950px;margin:0 auto;
+  }
+  .wish-card{
+    background:white;border-radius:20px;padding:40px 28px 35px;
+    box-shadow:0 12px 35px rgba(0,0,0,.06);
+    position:relative;overflow:hidden;
+    opacity:0;transform:translateY(35px);
+    transition:all .8s cubic-bezier(.34,1.56,.64,1);
+  }
+  .wish-card.visible{opacity:1;transform:translateY(0)}
+  .wish-card:nth-child(2){transition-delay:.12s}
+  .wish-card:nth-child(3){transition-delay:.24s}
+  .wish-card:hover{transform:translateY(-6px) !important;box-shadow:0 18px 45px rgba(183,28,92,.12)}
+  .wish-card::after{
+    content:'';position:absolute;bottom:0;left:0;right:0;height:3px;
+  }
+  .wish-card:nth-child(1)::after{background:linear-gradient(90deg,var(--rose),var(--peach))}
+  .wish-card:nth-child(2)::after{background:linear-gradient(90deg,var(--plum),var(--rose))}
+  .wish-card:nth-child(3)::after{background:linear-gradient(90deg,var(--gold),var(--peach))}
+
+  .wish-icon{
+    width:64px;height:64px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 18px;font-size:28px;
+  }
+  .wish-card:nth-child(1) .wish-icon{background:var(--rose-light)}
+  .wish-card:nth-child(2) .wish-icon{background:var(--plum-light)}
+  .wish-card:nth-child(3) .wish-icon{background:var(--gold-light)}
+
+  .wish-card h3{
+    font-family:'Playfair Display',serif;
+    font-size:22px;font-weight:400;color:var(--text);margin-bottom:10px;
+  }
+  .wish-card p{
+    font-family:'Cormorant Garamond',serif;
+    font-size:17px;color:var(--text-light);line-height:1.7;
+  }
+
+  /* ===== CAKE ===== */
+  .cake-section{
+    padding:80px 20px 100px;background:white;text-align:center;
+    position:relative;
+  }
+  .cake-wrap{
+    display:inline-block;position:relative;
+    opacity:0;transform:scale(.5) translateY(30px);
+    transition:all 1s cubic-bezier(.34,1.56,.64,1);
+  }
+  .cake-wrap.visible{opacity:1;transform:scale(1) translateY(0)}
+  .cake-emoji{
+    font-size:100px;display:block;
+    animation:cakeFloat 3s ease-in-out infinite;
+  }
+  @keyframes cakeFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+  .cake-glow{
+    position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);
+    width:120px;height:30px;
+    background:radial-gradient(ellipse,rgba(255,138,101,.3),transparent);
+    border-radius:50%;
+    animation:cakeFloat 3s ease-in-out infinite reverse;
+  }
+  .cake-text{
+    font-family:'Great Vibes',cursive;font-size:28px;color:var(--plum);
+    margin-top:15px;
+    animation:gentlePulse 2.5s ease infinite;
+  }
+  @keyframes gentlePulse{0%,100%{opacity:.7}50%{opacity:1}}
+
+  /* Candle flames */
+  .flames{position:absolute;top:-25px;left:50%;transform:translateX(-50%);display:flex;gap:12px}
+  .flame{
+    width:8px;height:14px;
+    background:radial-gradient(ellipse at bottom,#ffeb3b,#ff9800 60%,transparent);
+    border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+    animation:flicker .25s ease-in-out infinite alternate;
+  }
+  .flame:nth-child(2){animation-delay:.08s;height:16px}
+  .flame:nth-child(3){animation-delay:.16s}
+  @keyframes flicker{from{transform:scaleY(1) scaleX(1)}to{transform:scaleY(1.3) scaleX(.7)}}
+
+  /* ===== PHOTO STRIP ===== */
+  .strip-section{
+    padding:0;overflow:hidden;background:var(--cream);position:relative;
+  }
+  .strip-track{
+    display:flex;gap:0;
+    animation:scrollStrip 25s linear infinite;
+    width:max-content;
+  }
+  .strip-track img{
+    height:220px;width:auto;object-fit:cover;
+    filter:grayscale(.15);
+    transition:filter .4s,transform .4s;
+  }
+  .strip-track img:hover{filter:grayscale(0);transform:scale(1.05);z-index:2;position:relative}
+  @keyframes scrollStrip{
+    0%{transform:translateX(0)}
+    100%{transform:translateX(-50%)}
+  }
+
+  /* ===== FOOTER ===== */
+  .footer{
+    padding:90px 20px 60px;
+    background:linear-gradient(135deg,#1a1a2e,#16213e);
+    text-align:center;position:relative;overflow:hidden;
+  }
+  .footer-stars{
+    position:absolute;inset:0;overflow:hidden;
+  }
+  .star{
+    position:absolute;width:2px;height:2px;background:white;border-radius:50%;
+    animation:twinkle 3s ease-in-out infinite;
+  }
+  @keyframes twinkle{0%,100%{opacity:.2}50%{opacity:1}}
+
+  .footer h2{
+    font-family:'Great Vibes',cursive;
+    font-size:clamp(36px,7vw,68px);
+    color:var(--gold);position:relative;margin-bottom:10px;
+    animation:goldGlow 3s ease infinite;
+  }
+  @keyframes goldGlow{
+    0%,100%{text-shadow:0 0 20px rgba(201,148,62,.2)}
+    50%{text-shadow:0 0 40px rgba(201,148,62,.5),0 0 80px rgba(201,148,62,.2)}
+  }
+  .footer .footer-sub{
+    font-family:'Cormorant Garamond',serif;font-style:italic;
+    font-size:20px;color:rgba(255,255,255,.5);position:relative;
+    margin-bottom:30px;
+  }
+  .footer .hearts{
+    font-size:24px;position:relative;
+    animation:heartbeat 2s ease infinite;
+  }
+  @keyframes heartbeat{0%,100%{transform:scale(1)}14%{transform:scale(1.1)}28%{transform:scale(1)}42%{transform:scale(1.1)}}
+  .footer .made-with{
+    margin-top:40px;font-size:13px;color:rgba(255,255,255,.25);
+    position:relative;letter-spacing:1px;
+  }
+
+  /* ===== LIGHTBOX ===== */
+  .lightbox{
+    position:fixed;inset:0;background:rgba(10,10,20,.94);
+    z-index:10000;display:flex;align-items:center;justify-content:center;
+    opacity:0;visibility:hidden;transition:all .4s;cursor:pointer;
+    backdrop-filter:blur(12px);
+  }
+  .lightbox.active{opacity:1;visibility:visible}
+  .lightbox img{
+    max-width:88vw;max-height:88vh;border-radius:12px;
+    box-shadow:0 0 100px rgba(201,148,62,.2);
+    transform:scale(.85);transition:transform .5s cubic-bezier(.34,1.56,.64,1);
+  }
+  .lightbox.active img{transform:scale(1)}
+  .lb-close{
+    position:absolute;top:24px;right:28px;
+    width:44px;height:44px;border-radius:50%;
+    background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);
+    display:flex;align-items:center;justify-content:center;
+    color:white;font-size:22px;cursor:pointer;
+    transition:all .3s;
+  }
+  .lb-close:hover{background:rgba(255,255,255,.2);transform:rotate(90deg)}
+  .lb-nav{
+    position:absolute;top:50%;transform:translateY(-50%);
+    width:48px;height:48px;border-radius:50%;
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
+    display:flex;align-items:center;justify-content:center;
+    color:white;font-size:20px;cursor:pointer;transition:all .3s;
+  }
+  .lb-nav:hover{background:rgba(255,255,255,.18)}
+  .lb-prev{left:20px}
+  .lb-next{right:20px}
+
+  /* ===== MUSIC ===== */
+  .music-btn{
+    position:fixed;bottom:28px;right:28px;
+    width:52px;height:52px;border-radius:50%;
+    background:linear-gradient(135deg,var(--rose),var(--plum));
+    border:none;cursor:pointer;z-index:100;
+    box-shadow:0 4px 20px rgba(183,28,92,.35);
+    display:flex;align-items:center;justify-content:center;
+    transition:transform .3s,box-shadow .3s;
+  }
+  .music-btn:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(183,28,92,.5)}
+  .music-bars{display:flex;gap:3px;align-items:flex-end;height:18px}
+  .music-bars span{
+    width:3px;background:white;border-radius:2px;
+    transition:height .3s;
+  }
+  .music-btn.playing .music-bars span{animation:bar .7s ease infinite alternate}
+  .music-btn:not(.playing) .music-bars span{height:3px !important}
+  .music-bars span:nth-child(1){height:6px;animation-delay:0s}
+  .music-bars span:nth-child(2){height:14px;animation-delay:.1s}
+  .music-bars span:nth-child(3){height:10px;animation-delay:.2s}
+  .music-bars span:nth-child(4){height:16px;animation-delay:.3s}
+  @keyframes bar{from{height:3px}}
+
+  /* ===== RESPONSIVE ===== */
+  @media(max-width:900px){
+    .masonry{columns:2;column-gap:14px}
+    .polaroid{width:180px;padding:8px 8px 30px}
+    .hero-bg{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(4,1fr)}
+  }
+  @media(max-width:600px){
+    .masonry{columns:1;max-width:400px}
+    .hero-photo{width:160px;height:160px}
+    .polaroid{width:150px;padding:6px 6px 26px}
+    .polaroid .pol-text{font-size:13px}
+    .message-card{padding:35px 24px}
+    .strip-track img{height:150px}
+    .wishes-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- PRELOADER -->
+<div id="preloader">
+  <div class="loader-ring"><span class="loader-emoji">🎂</span></div>
+  <p>Preparing something special...</p>
+</div>
+
+<!-- CONFETTI -->
+<canvas id="confetti-canvas"></canvas>
+
+<!-- FLOATING ELEMENTS -->
+<div class="floaters" id="floaters"></div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <div class="lb-close" onclick="closeLightbox(event)">&times;</div>
+  <div class="lb-nav lb-prev" onclick="navLightbox(event,-1)">&#8249;</div>
+  <div class="lb-nav lb-next" onclick="navLightbox(event,1)">&#8250;</div>
+  <img id="lb-img" src="" alt="">
+</div>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+  <div class="hero-bg">
+    <img src="images/1.jpeg" alt=""><img src="images/2.jpeg" alt="">
+    <img src="images/3.jpeg" alt=""><img src="images/4.jpeg" alt="">
+    <img src="images/5.jpeg" alt=""><img src="images/7.jpeg" alt="">
+    <img src="images/8.jpeg" alt=""><img src="images/6.jpeg" alt="">
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-photo-wrap">
+      <div class="hero-photo-ring"></div>
+      <img src="images/6.jpeg" class="hero-photo" alt="Amma">
+    </div>
+    <div class="hero-badge">Celebrating the most beautiful soul</div>
+    <div class="hero-malayalam">ജന്മദിനാശംസകൾ</div>
+    <h1>Happy Birthday, <em>Amma!</em></h1>
+    <div class="hero-sub">With all the love in the world, from your family</div>
+  </div>
+  <a href="#message" class="scroll-arrow" onclick="event.preventDefault();document.getElementById('message').scrollIntoView({behavior:'smooth'})"></a>
+</section>
+
+<!-- ===== MESSAGE ===== -->
+<section class="message-section" id="message">
+  <div class="msg-deco left">Love</div>
+  <div class="msg-deco right">Amma</div>
+  <div class="section-title" data-animate>A Note From the <em>Heart</em></div>
+  <div class="section-divider" data-animate></div>
+  <div class="message-card" data-animate>
+    <div class="msg-quote">&ldquo;</div>
+    <p>
+      To the most wonderful Amma in the world — your love has been our guiding light,
+      your smile our greatest treasure, and your warmth our safest home.
+      Every beautiful memory we hold has your love woven through it.
+    </p>
+    <p style="margin-top:20px">
+      Today we celebrate not just your birthday, but the incredible person you are —
+      the heart of our family, our strength, and our endless source of joy.
+      May this year bring you all the happiness you so generously give to everyone around you.
+    </p>
+    <div class="msg-sign">With all our love</div>
+  </div>
+</section>
+
+<!-- ===== FEATURED PHOTO ===== -->
+<section style="padding:80px 20px;background:linear-gradient(180deg,var(--cream),var(--rose-light) 50%,var(--cream))">
+  <div class="section-title" data-animate>Our <em>Beautiful</em> Amma</div>
+  <div class="section-sub" data-animate>The smile that lights up our world</div>
+  <div class="feature-photo" data-animate onclick="openLightbox('images/6.jpeg')">
+    <img src="images/6.jpeg" alt="Amma smiling">
+    <div class="fp-label">
+      <h3>Radiant as Always</h3>
+      <p>Your smile is our greatest blessing</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PHOTO COLLAGE ===== -->
+<section class="gallery-section" id="gallery">
+  <div class="section-title" data-animate>Cherished <em>Moments</em></div>
+  <div class="section-sub" data-animate>Every photo holds a thousand memories</div>
+  <div class="masonry">
+    <div class="masonry-item" data-animate onclick="openLightbox('images/1.jpeg')">
+      <img src="images/1.jpeg" alt="" loading="lazy">
+      <div class="masonry-caption"><span>Together & Smiling</span><small>Love in every frame</small></div>
+    </div>
+    <div class="masonry-item" data-animate onclick="openLightbox('images/2.jpeg')">
+      <img src="images/2.jpeg" alt="" loading="lazy">
+      <div class="masonry-caption"><span>By the Sea</span><small>Peaceful moments</small></div>
+    </div>
+    <div class="masonry-item" data-animate onclick="openLightbox('images/5.jpeg')">
+      <img src="images/5.jpeg" alt="" loading="lazy">
+      <div class="masonry-caption"><span>Pure Love</span><small>The warmest embrace</small></div>
+    </div>
+    <div class="masonry-item" data-animate onclick="openLightbox('images/3.jpeg')">
+      <img src="images/3.jpeg" alt="" loading="lazy">
+      <div class="masonry-caption"><span>Nature's Beauty</span><small>Gentle soul</small></div>
+    </div>
+    <div class="masonry-item" data-animate onclick="openLightbox('images/4.jpeg')">
+      <img src="images/4.jpeg" alt="" loading="lazy">
+      <div class="masonry-caption"><span>Temple Blessings</span><small>Faith & family</small></div>
+    </div>
+    <div class="masonry-item" data-animate onclick="openLightbox('images/8.jpeg')">
+      <img src="images/8.jpeg" alt="" loading="lazy">
+      <div class="masonry-caption"><span>Under the Umbrella</span><small>Always protective</small></div>
+    </div>
+    <div class="masonry-item" data-animate onclick="openLightbox('images/7.jpeg')">
+      <img src="images/7.jpeg" alt="" loading="lazy">
+      <div class="masonry-caption"><span>Happy Together</span><small>Home is where Amma is</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== POLAROID SECTION ===== -->
+<section class="polaroid-section">
+  <div class="section-title" data-animate>Snapshots of <em>Joy</em></div>
+  <div class="section-sub" data-animate>Memories we hold close to our hearts</div>
+  <div class="polaroid-grid">
+    <div class="polaroid" data-animate onclick="openLightbox('images/1.jpeg')" style="transform:rotate(-5deg);margin-top:30px">
+      <img src="images/1.jpeg" alt="">
+      <div class="pol-text">Together Forever</div>
+    </div>
+    <div class="polaroid" data-animate onclick="openLightbox('images/3.jpeg')" style="transform:rotate(3deg);margin-top:-10px">
+      <img src="images/3.jpeg" alt="">
+      <div class="pol-text">In Nature's Embrace</div>
+    </div>
+    <div class="polaroid" data-animate onclick="openLightbox('images/4.jpeg')" style="transform:rotate(-2deg);margin-top:50px">
+      <img src="images/4.jpeg" alt="">
+      <div class="pol-text">Blessed Moments</div>
+    </div>
+    <div class="polaroid" data-animate onclick="openLightbox('images/8.jpeg')" style="transform:rotate(4deg);margin-top:5px">
+      <img src="images/8.jpeg" alt="">
+      <div class="pol-text">Our Shelter</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SCROLLING PHOTO STRIP ===== -->
+<section class="strip-section">
+  <div class="strip-track" id="strip">
+    <img src="images/1.jpeg" alt=""><img src="images/2.jpeg" alt="">
+    <img src="images/3.jpeg" alt=""><img src="images/4.jpeg" alt="">
+    <img src="images/5.jpeg" alt=""><img src="images/6.jpeg" alt="">
+    <img src="images/7.jpeg" alt=""><img src="images/8.jpeg" alt="">
+    <!-- duplicate for seamless loop -->
+    <img src="images/1.jpeg" alt=""><img src="images/2.jpeg" alt="">
+    <img src="images/3.jpeg" alt=""><img src="images/4.jpeg" alt="">
+    <img src="images/5.jpeg" alt=""><img src="images/6.jpeg" alt="">
+    <img src="images/7.jpeg" alt=""><img src="images/8.jpeg" alt="">
+  </div>
+</section>
+
+<!-- ===== WISHES ===== -->
+<section class="wishes-section" id="wishes">
+  <div class="section-title" data-animate>Birthday <em>Wishes</em></div>
+  <div class="section-sub" data-animate>Everything we wish for you, Amma</div>
+  <div class="wishes-grid">
+    <div class="wish-card" data-animate>
+      <div class="wish-icon">🌸</div>
+      <h3>Health & Happiness</h3>
+      <p>May every sunrise bring you good health, every sunset fill you with peace, and every moment in between be touched with joy.</p>
+    </div>
+    <div class="wish-card" data-animate>
+      <div class="wish-icon">✨</div>
+      <h3>Dreams Come True</h3>
+      <p>May all your wishes — spoken and unspoken — blossom into beautiful realities this new year of your life.</p>
+    </div>
+    <div class="wish-card" data-animate>
+      <div class="wish-icon">💝</div>
+      <h3>Boundless Love</h3>
+      <p>May you feel as deeply loved and cherished as you make each one of us feel — today and always, dear Amma.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CAKE ===== -->
+<section class="cake-section">
+  <div class="section-title" data-animate>Make a <em>Wish!</em></div>
+  <div class="section-sub" data-animate>Blow out the candles, Amma</div>
+  <div class="cake-wrap" data-animate>
+    <div class="flames"><div class="flame"></div><div class="flame"></div><div class="flame"></div></div>
+    <span class="cake-emoji">🎂</span>
+    <div class="cake-glow"></div>
+  </div>
+  <div class="cake-text" data-animate>Happy Birthday to You!</div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<section class="footer">
+  <div class="footer-stars" id="stars"></div>
+  <h2>ഞങ്ങളുടെ പ്രിയ അമ്മയ്ക്ക്</h2>
+  <div class="footer-sub">To our dearest Amma — you are our everything</div>
+  <div class="hearts">❤️ 🧡 💛 💚 💙 💜 🩷</div>
+  <div class="made-with">MADE WITH LOVE</div>
+</section>
+
+<!-- MUSIC -->
+<button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="Play Birthday Music">
+  <div class="music-bars"><span></span><span></span><span></span><span></span></div>
+</button>
+
+<script>
+// ===== IMAGES LIST =====
+const allImages = ['images/1.jpeg','images/2.jpeg','images/3.jpeg','images/4.jpeg',
+  'images/5.jpeg','images/6.jpeg','images/7.jpeg','images/8.jpeg'];
+let currentLbIndex = 0;
+
+// ===== PRELOADER =====
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    document.getElementById('preloader').classList.add('hidden');
+    launchConfetti();
+  },2000);
+});
+
+// ===== CONFETTI =====
+const cvs=document.getElementById('confetti-canvas');
+const ctx=cvs.getContext('2d');
+let pieces=[],active=false;
+function resize(){cvs.width=innerWidth;cvs.height=innerHeight}
+resize();addEventListener('resize',resize);
+
+const colors=['#e8436f','#c9943e','#7b2d8e','#ff8a65','#60a5fa','#34d399','#fbbf24','#f472b6','#a78bfa'];
+class Confetti{
+  constructor(){this.reset()}
+  reset(){
+    this.x=Math.random()*cvs.width;this.y=-15;
+    this.w=6+Math.random()*10;this.h=4+Math.random()*7;
+    this.c=colors[Math.random()*colors.length|0];
+    this.spd=2+Math.random()*3;this.a=Math.random()*6.28;
+    this.spin=(.5-Math.random())*.12;this.drift=(.5-Math.random())*1.8;
+    this.o=1;this.shape=Math.random()>.4?'r':'c';
+  }
+  update(){
+    this.y+=this.spd;this.x+=this.drift+Math.sin(this.a)*.4;this.a+=this.spin;
+    if(this.y>cvs.height+20){active?this.reset():this.o=0}
+  }
+  draw(){
+    if(this.o<=0)return;
+    ctx.save();ctx.translate(this.x,this.y);ctx.rotate(this.a);
+    ctx.globalAlpha=this.o;ctx.fillStyle=this.c;
+    if(this.shape==='r')ctx.fillRect(-this.w/2,-this.h/2,this.w,this.h);
+    else{ctx.beginPath();ctx.arc(0,0,this.w/3,0,6.28);ctx.fill()}
+    ctx.restore();
+  }
+}
+function launchConfetti(){
+  active=true;pieces=[];
+  for(let i=0;i<200;i++){const p=new Confetti();p.y=Math.random()*cvs.height*.6;pieces.push(p)}
+  anim();setTimeout(()=>active=false,6000);
+}
+function anim(){
+  ctx.clearRect(0,0,cvs.width,cvs.height);
+  pieces=pieces.filter(p=>p.o>0);
+  pieces.forEach(p=>{p.update();p.draw()});
+  if(pieces.length)requestAnimationFrame(anim);
+}
+
+// ===== FLOATING ELEMENTS =====
+const floaters=document.getElementById('floaters');
+const emojis=['❤️','🌸','✨','💖','🌺','💫','🌷','💝','🎀','🩷','🌟','🦋'];
+function spawnFloat(){
+  const el=document.createElement('span');el.className='floater';
+  el.textContent=emojis[Math.random()*emojis.length|0];
+  el.style.left=Math.random()*100+'%';
+  el.style.fontSize=(12+Math.random()*14)+'px';
+  el.style.animationDuration=(10+Math.random()*10)+'s';
+  el.style.animationDelay=Math.random()*4+'s';
+  floaters.appendChild(el);
+  setTimeout(()=>el.remove(),22000);
+}
+setInterval(spawnFloat,1400);
+
+// ===== STARS IN FOOTER =====
+const starsEl=document.getElementById('stars');
+for(let i=0;i<60;i++){
+  const s=document.createElement('div');s.className='star';
+  s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';
+  s.style.animationDelay=Math.random()*3+'s';
+  s.style.animationDuration=(2+Math.random()*3)+'s';
+  s.style.width=s.style.height=(1+Math.random()*2)+'px';
+  starsEl.appendChild(s);
+}
+
+// ===== SCROLL ANIMATIONS =====
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('[data-animate]').forEach(el=>obs.observe(el));
+
+// ===== LIGHTBOX =====
+function openLightbox(src){
+  currentLbIndex=allImages.indexOf(src);if(currentLbIndex<0)currentLbIndex=0;
+  document.getElementById('lb-img').src=src;
+  document.getElementById('lightbox').classList.add('active');
+  document.body.style.overflow='hidden';
+}
+function closeLightbox(e){
+  if(e)e.stopPropagation();
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow='';
+}
+function navLightbox(e,dir){
+  e.stopPropagation();
+  currentLbIndex=(currentLbIndex+dir+allImages.length)%allImages.length;
+  document.getElementById('lb-img').src=allImages[currentLbIndex];
+}
+document.getElementById('lightbox').addEventListener('click',e=>{
+  if(e.target===document.getElementById('lightbox')||e.target===document.getElementById('lb-img'))closeLightbox(e);
+});
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('lightbox').classList.contains('active'))return;
+  if(e.key==='Escape')closeLightbox();
+  if(e.key==='ArrowLeft')navLightbox(e,-1);
+  if(e.key==='ArrowRight')navLightbox(e,1);
+});
+
+// ===== CLICK SPARKLES =====
+document.addEventListener('click',e=>{
+  for(let i=0;i<10;i++){
+    const s=document.createElement('div');
+    s.style.cssText=`position:fixed;left:${e.clientX}px;top:${e.clientY}px;
+      width:5px;height:5px;border-radius:50%;pointer-events:none;z-index:9998;
+      background:${colors[Math.random()*colors.length|0]};transition:all .7s cubic-bezier(.25,.46,.45,.94)`;
+    document.body.appendChild(s);
+    requestAnimationFrame(()=>{
+      const a=(6.28/10)*i,d=35+Math.random()*40;
+      s.style.transform=`translate(${Math.cos(a)*d}px,${Math.sin(a)*d}px) scale(0)`;
+      s.style.opacity='0';
+    });
+    setTimeout(()=>s.remove(),800);
+  }
+});
+
+// ===== PARALLAX =====
+const heroC=document.querySelector('.hero-content');
+addEventListener('scroll',()=>{
+  const y=scrollY;
+  if(y<innerHeight&&heroC){
+    heroC.style.transform=`translateY(${y*.25}px)`;
+    heroC.style.opacity=1-y/(innerHeight*.75);
+  }
+});
+
+// ===== MUSIC =====
+let audioCtx,playing=false,musicTO;
+function toggleMusic(){
+  const btn=document.getElementById('musicBtn');
+  if(!playing){
+    if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    playMelody();btn.classList.add('playing');playing=true;
+  }else{
+    clearTimeout(musicTO);btn.classList.remove('playing');playing=false;
+  }
+}
+function note(f,t,d){
+  const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+  o.type='triangle';o.frequency.value=f;
+  g.gain.setValueAtTime(.1,t);g.gain.exponentialRampToValueAtTime(.001,t+d);
+  o.connect(g);g.connect(audioCtx.destination);o.start(t);o.stop(t+d);
+}
+function playMelody(){
+  const n=audioCtx.currentTime;
+  [[262,0,.3],[262,.3,.3],[294,.6,.6],[262,1.2,.6],[349,1.8,.6],[330,2.4,1],
+   [262,3.6,.3],[262,3.9,.3],[294,4.2,.6],[262,4.8,.6],[392,5.4,.6],[349,6,1],
+   [262,7.2,.3],[262,7.5,.3],[523,7.8,.6],[440,8.4,.6],[349,9,.6],[330,9.6,.6],[294,10.2,1],
+   [466,11.4,.3],[466,11.7,.3],[440,12,.6],[349,12.6,.6],[392,13.2,.6],[349,13.8,1]
+  ].forEach(([f,t,d])=>note(f,n+t,d));
+  musicTO=setTimeout(()=>{if(playing)playMelody()},15500);
+}
+</script>
+</body>
+</html>
